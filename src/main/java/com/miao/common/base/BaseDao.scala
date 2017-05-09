@@ -66,6 +66,11 @@ trait BaseDao[K,V]{
     */
   def selectByList(list: List[K])
 
-  def queryByPage(pageInfo: PageInfo) : PageInfo
+  /**
+    * 分页查询
+    * @param pageInfo
+    * @return
+    */
+  def queryByPage(pageInfo: PageInfo[V]) : PageInfo[V]
 
 }
