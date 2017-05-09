@@ -1,5 +1,6 @@
 package com.miao.controller
 
+import com.miao.common.base.BaseController
 import com.miao.model.User
 import org.springframework.web.bind.annotation._
 

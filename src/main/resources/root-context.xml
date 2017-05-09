@@ -58,8 +58,6 @@
         <property name="filters" value="mergeStat"/>
     </bean>
 
-    <import resource="spring-mybatis.xml"/>
-
     <bean name="jdbcTemplate" class="org.springframework.jdbc.core.JdbcTemplate"></bean>
 
     <!-- 配置事务管理 -->

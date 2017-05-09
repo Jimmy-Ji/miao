@@ -1,4 +1,4 @@
-package com.miao.service
+package com.miao.common.base
 
 import org.springframework.stereotype.Service
 
@@ -8,6 +8,6 @@ import org.springframework.stereotype.Service
 @Service
 trait BaseService [K,V]{
 
-  def save(model : V): V
+  def save(model : V)
 
 }

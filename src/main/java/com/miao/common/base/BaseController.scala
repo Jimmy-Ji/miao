@@ -1,7 +1,7 @@
-package com.miao.controller
+package com.miao.common.base
 
 import javax.annotation.Resource
-import com.miao.service.BaseService
+
 import org.springframework.stereotype.Controller
 
 /**
@@ -15,6 +15,7 @@ trait BaseController[K,V] {
 
   def save(v: V): V ={
     baseService.save(v)
+    v
   }
 
 }

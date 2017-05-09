@@ -1,5 +1,6 @@
 package com.miao.service
 
+import com.miao.common.base.BaseService
 import com.miao.model.User
 import org.springframework.stereotype.Service
 
@@ -10,7 +11,7 @@ import org.springframework.stereotype.Service
 class UserService extends BaseService[String,User]{
 
 
-  override def save(model: User): User = {
+  override def save(model: User): Unit = {
 
   }
 }
