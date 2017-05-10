@@ -17,9 +17,9 @@ class UserController extends BaseController[String,User]{
 
   @RequestMapping(value=Array("test.do"),method = Array(RequestMethod.POST),produces=Array("application/json"))
   def add(@RequestBody user: User):String = {
-    println(" controller === "+user.getName)
+    println(" controller === "+user)
     this.save(user)
-    user.getName
+    user.toString
   }
 
 }

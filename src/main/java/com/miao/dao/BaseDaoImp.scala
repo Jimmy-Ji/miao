@@ -1,8 +1,12 @@
 package com.miao.dao
 
+import com.miao.common.annotation.TableFiled
 import com.miao.common.base.BaseDao
 import com.miao.common.page.PageInfo
 import com.miao.common.utils.MyUUID
+import com.miao.model.User
+import org.apache.commons.lang3.StringUtils
+import org.apache.logging.log4j.{LogManager, Logger}
 import org.springframework.jdbc.core.JdbcTemplate
 
 /**
@@ -10,10 +14,12 @@ import org.springframework.jdbc.core.JdbcTemplate
   */
 class BaseDaoImp[K,V] extends BaseDao[K,V]{
 
+  val log : Logger = LogManager.getLogger
+
   private var jdbcTemplate : JdbcTemplate = _
 
   private val DELETE : String = "delete from table_name "
-  private val INSERT : String = "insert into table_name "
+  private val INSERT : String = "insert into table_name ( "
   private val UPDATE : String = "update table_name set "
 
   private val uuid : MyUUID = new MyUUID(0,0)
@@ -24,7 +30,42 @@ class BaseDaoImp[K,V] extends BaseDao[K,V]{
     * @param v 传入实体类对象
     * @return
     */
-  override def save(v: V): V = ???
+  override def save(v: V): V = {
+    var sql = ""
+    var fileds = ""
+    var values = " values ( "
+    //遍历所有方法
+    v.getClass.getDeclaredMethods.foreach(f => {
+      log.info("==========="+f.getName)
+      if (f.getName.contains("get")
+        && f.getAnnotation(classOf[TableFiled]) == null
+        ){
+          val name = f.getName.substring(3,f.getName.length).toUpperCase
+          log.info("name==="+name)
+          val value = f.invoke(v)
+          log.info("value === "+value)
+          if (name == "ID"){
+            val id = uuid.nextId()
+            fileds += name +","
+            values += id+","
+            v.getClass.getMethod("setId",classOf[Long]).invoke(v,id.asInstanceOf[AnyRef])
+          }
+          if (value != null){
+            if (f.getReturnType.getName == "java.lang.String" ){
+              fileds += name +","
+              values += "'"+value+"',"
+            }else{
+              fileds += name +","
+              values += value + ","
+            }
+          }
+      }
+    })
+    v.getClass
+    sql = INSERT + fileds.substring(0,fileds.length-1) +") " + values.substring(0,values.length-1) + ")"
+    log.info("======"+sql+"========")
+    v
+  }
   /**
     * 批量保存
     *
@@ -85,4 +126,16 @@ override def saveByList(list: List[V]): List[V] = ???
     * @return
     */
   override def queryByPage(pageInfo: PageInfo[V]): PageInfo[V] = ???
+}
+
+object BaseDaoImp{
+
+  def main(args: Array[String]): Unit = {
+    val dao = new BaseDaoImp[String,User]
+    val user = new User
+    user.setAge(20 toByte)
+    val us : User =dao.save(user)
+    println(us.getId)
+  }
+
 }
