@@ -24,7 +24,12 @@ class Test[V] {
 object Test{
 
   def main(args: Array[String]): Unit = {
-    val test : Test[User] = new Test
-    test.test(new User)
+
+    val str = "HelloWorld"
+
+    val result = str.split("(?<!^)(?=[A-Z])")
+
+    println(result.reduce((a,b) => a+"_"+b))
+
   }
 }

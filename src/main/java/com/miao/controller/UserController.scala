@@ -1,14 +1,13 @@
 package com.miao.controller
 
-import com.miao.common.base.BaseController
-import com.miao.model.User
+import com.miao.model.{TblTest, User}
 import org.springframework.web.bind.annotation._
 
 /**
   * Created by pp on 2017/5/8.
   */
 @RestController
-class UserController extends BaseController[String,User]{
+class UserController extends BaseController{
 
   @RequestMapping(value=Array("thello.do"),method = Array(RequestMethod.GET))
   def test() : String={
@@ -16,9 +15,10 @@ class UserController extends BaseController[String,User]{
   }
 
   @RequestMapping(value=Array("test.do"),method = Array(RequestMethod.POST),produces=Array("application/json"))
-  def add(@RequestBody user: User):String = {
-    println(" controller === "+user)
-    this.save(user)
+  def add(@RequestBody user: TblTest):String = {
+    println(" controller === "+user.getName+user.getAge)
+    val users = save[TblTest](user)
+    println(users.getId)
     user.toString
   }
 

@@ -1,6 +1,5 @@
 package com.miao.common.page
 
-
 import scala.beans.BeanProperty
 import scala.reflect.ClassTag
 
@@ -9,6 +8,8 @@ import scala.reflect.ClassTag
   */
 class PageInfo[V:ClassTag] extends Serializable{
 
+  @BeanProperty var start : Int = _
+  @BeanProperty var end : Int = _
   @BeanProperty var count : Int = _
   @BeanProperty var pageCount : Int = _
   @BeanProperty var currentPage : Int = _

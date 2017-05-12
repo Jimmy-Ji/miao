@@ -127,7 +127,7 @@
             enableDeleteByExample="false" enableSelectByExample="false" enableUpdateByExample="false" /> 
             -->
             
-        <table schema="${jdbc_username}" tableName="user"  enableCountByExample="false"
+        <table schema="${jdbc_username}" tableName="tbl_test"  enableCountByExample="false"
             enableDeleteByExample="false" enableSelectByExample="false" enableUpdateByExample="false" /> 
         
 	</context>

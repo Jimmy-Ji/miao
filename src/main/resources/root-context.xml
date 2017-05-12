@@ -58,7 +58,9 @@
         <property name="filters" value="mergeStat"/>
     </bean>
 
-    <bean name="jdbcTemplate" class="org.springframework.jdbc.core.JdbcTemplate"></bean>
+    <bean name="jdbcTemplate" class="org.springframework.jdbc.core.JdbcTemplate">
+        <property name="dataSource" ref="dataSource"/>
+    </bean>
 
     <!-- 配置事务管理 -->
     <bean name="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
