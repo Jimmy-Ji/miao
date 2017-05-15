@@ -98,4 +98,5 @@
         <aop:pointcut id="transactionPointcut" expression="execution(* com.miao.service..*.*(..))"/>
         <aop:advisor pointcut-ref="transactionPointcut" advice-ref="transactionAdvice"/>
     </aop:config>
+
 </beans>

@@ -1,5 +1,7 @@
 package com.miao.controller
 
+import com.miao.common.utils.ConfigCache
+import com.miao.controller.base.BaseController
 import com.miao.model.{TblTest, User}
 import org.springframework.web.bind.annotation._
 
@@ -19,6 +21,7 @@ class UserController extends BaseController{
     println(" controller === "+user.getName+user.getAge)
     val users = save[TblTest](user)
     println(users.getId)
+    println("============"+ConfigCache.getProString("jdbc_url"))
     user.toString
   }
 

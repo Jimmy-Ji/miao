@@ -23,7 +23,7 @@ class BaseDao extends BaseCriterion{
   private var jdbcTemplate : JdbcTemplate = _
 
   private val DELETE : String = "delete from  "
-  private val INSERT : String = "insert into  ( "
+  private val INSERT : String = "insert into  "
   private val UPDATE : String = "update  "
 
   private val uuid : MyUUID = new MyUUID(0,0)
@@ -162,7 +162,7 @@ class BaseDao extends BaseCriterion{
           //超厉害的正则表达式，看不懂，功能是按大写字母切割字符串
           val name = f.getName.substring(3,f.getName.length).split("(?<!^)(?=[A-Z])").reduce((a,b)=>a+"_"+b).toLowerCase
           val value = f.invoke(v)
-          if (name == "Id"){
+          if (name == "id"){
             val id = uuid.nextId().toString
             fileds += name +","
             values += "'"+id+"',"
@@ -199,7 +199,7 @@ class BaseDao extends BaseCriterion{
           //超厉害的正则表达式，看不懂，功能是按大写字母切割字符串
           val name = f.getName.substring(3, f.getName.length).split("(?<!^)(?=[A-Z])").reduce((a, b) => a + "_" + b).toLowerCase
           val value = f.invoke(v)
-          if (name == "Id"){
+          if (name == "id"){
             id = value.toString
           }else{
             if (value != null) {

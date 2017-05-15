@@ -5,6 +5,8 @@ package com.miao.common.utils
   */
 object StrUtils {
 
+  def test(): Unit ={
 
+  }
 
 }
