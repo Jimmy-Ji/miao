@@ -16,6 +16,8 @@ object ConfigCache {
 
   val list = List("hbase.properties","jdbc.properties")
 
+  loadConfig
+
   def getFilePath(fileName : String): String ={
     Thread.currentThread().getContextClassLoader.getResource(fileName).getPath
   }
@@ -45,7 +47,6 @@ object ConfigCache {
   }
 
   def main(args: Array[String]): Unit = {
-    loadConfig
     println(ConfigCache.getProString("jdbc_url"))
   }
 
