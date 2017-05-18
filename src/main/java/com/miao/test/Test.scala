@@ -3,6 +3,7 @@ package com.miao.test
 import java.lang.reflect.Field
 
 import com.miao.common.annotation.TableFiled
+import com.miao.common.utils.ConfigCache
 import com.miao.model.User
 
 /**
@@ -25,11 +26,7 @@ object Test{
 
   def main(args: Array[String]): Unit = {
 
-    val str = "HelloWorld"
-
-    val result = str.split("(?<!^)(?=[A-Z])")
-
-    println(result.reduce((a,b) => a+"_"+b))
+   println(ConfigCache.getProString("url")+"=========")
 
   }
 }

@@ -8,15 +8,13 @@ import org.apache.logging.log4j.LogManager
 /**
   * Created by pp on 2017/5/15.
   */
-object ConfigCache {
+object ConfigCache{
 
   val log = LogManager.getLogger
 
   val pro : Properties = new Properties()
-
-  val list = List("hbase.properties","jdbc.properties")
-
-  loadConfig
+  //配置文件中的name不能一样，不然会覆盖掉了
+  val list = List("hbase.properties","jdbc.properties","hive.properties")
 
   def getFilePath(fileName : String): String ={
     Thread.currentThread().getContextClassLoader.getResource(fileName).getPath
@@ -39,15 +37,12 @@ object ConfigCache {
   }
 
   def getProString(string: String) : String = {
-    pro.getProperty(string).toString
+    pro.getProperty(string,"").toString
   }
 
   def getProInt(string: String): Unit ={
-    pro.getProperty(string)toInt
+    pro.getProperty(string,"0")toInt
   }
 
-  def main(args: Array[String]): Unit = {
-    println(ConfigCache.getProString("jdbc_url"))
-  }
-
+  loadConfig()
 }

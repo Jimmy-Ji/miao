@@ -2,8 +2,9 @@ package com.miao.dao
 
 import com.miao.common.utils.{ConfigCache, HTableManager}
 import org.apache.hadoop.conf.Configuration
-import org.apache.hadoop.hbase.{HBaseConfiguration, HColumnDescriptor, HTableDescriptor, TableName}
+import org.apache.hadoop.hbase._
 import org.apache.hadoop.hbase.client.{Connection, ConnectionFactory, Scan}
+import org.apache.hadoop.hbase.filter.PageFilter
 import org.apache.hadoop.hbase.util.Bytes
 import org.apache.logging.log4j.LogManager
 
@@ -36,11 +37,21 @@ class HbaseDao {
     true
   }
 
-  def splitKey(numSplit : Int ) : Array[Array[Byte]] ={
+  /**
+    * 根据分区数获取预分区种子
+    * @param numSplit
+    * @return
+    */
+  private def splitKey(numSplit : Int ) : Array[Array[Byte]] ={
     val keys = HTableManager.generatPartitionSeed(numSplit)
     keys.filter(p => !"00zz".contains(p)).map(f => f.getBytes)
   }
 
+  /**
+    * 删除表
+    * @param tableName
+    * @return
+    */
   def dropTable(tableName:String): Boolean ={
     val admin = conn.getAdmin
     if(tableIsExist(TableName.valueOf(tableName))){
@@ -59,15 +70,22 @@ class HbaseDao {
     admin.tableExists(tableName)
   }
 
-  def rangeData(tableName : String,scan: Scan): Unit ={
-
+  def rangeData[T](tableName : String,scan: Scan): Unit ={
     val table = conn.getTable(TableName.valueOf(tableName))
+    scan.setFilter(new PageFilter(1))
     val result = table.getScanner(scan)
-    while(result.iterator().hasNext){
-      val re = result.iterator().next()
-
+    val it = result.iterator()
+    while(it.hasNext){
+      val re = it.next()
+      re.getColumnCells(Bytes.toBytes("f1"),Bytes.toBytes("last_model")).forEach(a => println(new String(CellUtil.cloneValue(a)) ))
     }
 
+  }
+
+  def test[T](c : Class[T]): List[(String,String)] ={
+    c.getDeclaredFields.map(a => {
+      List((a.getName,a.getType.getSimpleName))
+    }).reduce((a,b) => a++b)
   }
 
 
@@ -77,9 +95,12 @@ object HbaseDao{
 
   val h = new HbaseDao
   ConfigCache.loadConfig()
+  case class Result1(name : String,age:Int)
+
   def main(args: Array[String]): Unit = {
-    println(ConfigCache.getProString("hbase.zookeeper.quorum"))
-    h.rangeData("H_TOPUP",new Scan())
+
+    //h.test(classOf[Result1]).foreach(a=>println(a))
+    h.rangeData("wide_table",new Scan())
 
   }
 }
